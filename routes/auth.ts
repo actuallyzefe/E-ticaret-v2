@@ -1,7 +1,11 @@
 import express from 'express';
 import { body } from 'express-validator';
 import { validateRequest, currentUser } from '@yusuferen/common';
-import { signInController, signUpController } from '../controllers/auth';
+import {
+  signInController,
+  signOutController,
+  signUpController,
+} from '../controllers/auth';
 
 const router = express.Router();
 
@@ -35,11 +39,7 @@ router.get('/', (req, res) => {
   console.log('yarrak');
 });
 
-router.post('/api/users/signout', (req, res) => {
-  req.session = null;
-
-  res.send({});
-});
+router.post('/signout', signOutController);
 
 router.get('/api/users/currentuser', currentUser, (req, res) => {
   res.send({ currentUser: req.currentUser || null });
