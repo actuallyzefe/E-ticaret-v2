@@ -1,10 +1,25 @@
 import express from 'express';
-import { authRoutes } from './routes/auth';
+import 'express-async-errors';
+import { json } from 'body-parser';
+import cookieSession from 'cookie-session';
+import { authRouter } from './routes/auth';
+
+import { errorHandler, NotFoundError } from '@yusuferen/common';
 
 const app = express();
+app.use(json());
+app.use(
+  cookieSession({
+    signed: false,
+  })
+);
 
-app.use(express.json());
+app.use('/api/users', authRouter);
 
-app.use('/', authRoutes);
+app.all('*', async (req, res) => {
+  throw new NotFoundError();
+});
 
-app.listen(3000);
+app.use(errorHandler);
+
+export { app };
