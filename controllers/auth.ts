@@ -68,3 +68,9 @@ export const signInController = async (req: Request, res: Response) => {
 
   res.status(200).send(existingUser);
 };
+
+export const signOutController = (req: Request, res: Response) => {
+  req.session = null;
+
+  res.send({});
+};
